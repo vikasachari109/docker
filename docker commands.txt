@@ -1,0 +1,606 @@
+Step by step: Resource - https://www.youtube.com/watch?v=wi-MGFhrad0&list=PLhW3qG5bs-L99pQsZ74f-LC-tOEsBp2rK&index=1
+
+What is Docker ?
+
+Docker is the world’s leading software container platform
+Docker makes the process of application deployment very easy and efficient and resolves a lot of issues related to deploying applications
+
+==> Docker is a tool designed to make it easier to deploy and run applications by using containers
+
+==> Docker gives you a standard way of packaging your application with all its dependencies in a container
+
+==> Containers allow a developer to package up an application with all of the parts it needs,
+such as libraries and other dependencies, and ship it all out as one package. 
+
+Understand Docker with analogy of the Shipping industry
+
+How a real world problem was resolved using container
+
+Adv - Portability,easy running and transfering, local and prod test can be done smoothly, verison controlling can be done.
+    - Every app works in its own conatainer and does not interferes with other apps. Isolation is a great feature in the docker.
+
+================================================================================================================================================================
+Docker Work Flow:
+// Image 1
+
+1 - Developer will design Dockerfile 
+2 - Dockerfile = describes steps to create a docker image.its like a recipe with all the ingredients and steps to make your dish.
+3 - Dockerfile used to create Docker images which contains applications and dependencies also extracts the docker container.
+4 - Docker Container = will have the contains applications and dependencies , they are the run time images of the containers.
+5 - All images are stored in the repo called the Docker hub. you can also store the docker images in the local and runtime industry as well.
+
+Virtualization vs Containerization:
+// Image 2 and 3
+
+=> virtualization = Has one host and one Hypervisor which allows to create the VM = virtual machines. and seperate OS for each
+ 	          = Resource allocation is fixed and does not change as per application needs. so there is lot of space and memory wastage
+	         
+==> Containerization = Has one host and one container Engine and above the container images which conatins dependencies.
+                     = it will use the host OS. Containers are the light weight alternative to VM's.
+
+Docker has a client-server architecture:
+// Image 4,5,6
+
+client  = command line interface
+server  = api calls 
+
+=======================================================================================================================================================================
+1 - Docker Basic:
+{
+
+> docker version = tells the version of client and server
+> docker -v = version as well
+> docker info = all information about docker 
+> docker --help = lets you know what are the tools available
+> docker <any name> --help = helps you find and give the particular name of <any name>, example = images,containers,options,run,etc...  
+> docker login = lets you to login with the docker hub account 
+
+System commands:
+>docker stats = gives which one is using how much memory and all status
+>docker system df = give info of elements (type, images, containers, local volumes, build cache, etc..)
+>docker system prune = removes the unused data. and data of containers which are not runnning.
+
+}
+=======================================================================================================================================================================
+2 - Docker Images:
+==> Docker images are templates used to create Docker Containers
+==> images are stored in the Registries(e.g. docker hub)
+==> images are stack of layers based in the containers.
+==> stores the code and details,images can be shared also.
+==> Images are read-only that means everytime you make a change you need to re-build and start again.
+{
+
+> docker images = shows us the images that are present
+> docker images --help = shows the tools of images
+> docker images -q = show only the images id
+> docker images -f "dangling=false" = lists all docker images of dangling equals to false
+> docker images -f "dangling=false" -q = lists the id of images by filter
+> docker run <image name> = running the image creates the container in the local.
+> docker run -it <image name> bash = "-it" stands for interactive mood to run os like (ubuntu,etc..) and also says not to exit out of it.
+> docker run --name <any name> -it <image name> bash = <any name> can provide any name to the container which you like to have. 
+> docker run -it <image name or image Id> /bin/bash = runs the image.
+> docker inspects =  info and steps of layers
+> docker ps (or) docker ps -a = docker running images
+> docker ps -a = running all conatiners
+> docker stop <image name> = stops the image 
+> docker docker rm -f <image name or id> = remove force fully
+> docker pull <image name> = extract the image form source
+> docker pull <image name>:<image version> = to extract the image with particular version 
+> docker rm <im-name> = remove container
+> docker rmi <image name> = delete the image details in the local  
+> docker logs -f <image name> = get the logs and follow live. //remove -f to get the history logs
+> atach and dettached of the terminale > docker run -p 3030:81 -d  <ID> , docker start -a 3030:81 <ID>
+
+ 
+}
+=======================================================================================================================================================================
+3 - Docker Containers:
+==> Containers are running instances of Docker images
+==> whenever you create a image it creates the container
+==> Docker components = 1-Client(build,pull,run), 2-Docker host(Docker Deemon,container,images), 3-Registry(docker hub)
+==> refer image = https://blog.knoldus.com/docker-components/ 
+// image c 
+{
+
+> docker ps or docker ps -a = shows running docker conatiners
+> docker run <image name> =  runs the application finds in local & if its not available goes to the global and extracts it. // docker run -p 3003:81 --name <container-name>
+> docker start <container Name/id> = starts the app
+> docker stop <container Name/id> = stops the app
+
+> docker pause <container Name/id> = pauses the application
+> docker unpause <container Name/id> = unpauses the app
+
+> docker run --name < 'can provide any name for container like' MyUbuntu> -it ubuntu = we can provide the name any name of the container
+> docker top <container Name/id> = top processes of that id 
+> docker stats <container Name/id> = gives stats info like id,memory,intput,name,net etc..
+
+> docker kill <container Name/id> = stops it forcefully 
+> docker attach <container Name/id> = connects the terminal to local one and perform commands
+				    = (ls = gives list), (^c = it exits), (exit = exits the link or attach of the terminal for windowsShell)
+> docker rm <container Name/id> = removes // using --rm -d remove the container once stopped.
+> docker container prune = remove all stopped containers at once !
+> docker history <container Name/id> = all pervious details we will be provided
+ 
+}
+=======================================================================================================================================================================
+4 - Jenkins Container.
+==>Jenkins is used to build and test your product continuously, so developers can continuously integrate changes into the build.
+==>Jenkins is the most popular open source CI/CD tool on the market today and is used in support of DevOps, alongside other cloud native tools.
+
+{
+
+> docker pull jenkins = extracts the jenkins image
+> docker run -p 8080:8080 -p 50000:50000 jenkins = starts the jenkins with pugins where everything will be lost when you close it.
+> docker run -p 8080:8080 -p 50000:50000 -v <'any place in your local' /users/vikas/...>:/var/jenkins_home jenkins = this command wil start and save it.
+> password will be there to access the jenkins in the local host and when can find that in the secret file which will be present
+> set up the id, password, plugins, items, etc..!
+> docker ps = lets you show the running jenkins server
+> docker start = container 
+> transfer is easy in sharing the items and files locally with different container and host
+> docker volume create <any name> = creates the volume
+> docker volume inspect <any mane> = info of volume
+> see the mounts and add volumes in the jenkins
+
+}
+======================================================================================================================================================================
+5 - Docker File:
+// Image e
+==> A text file with instructions to build our own images and automation of docker image creation
+a) FROM <base_image> = any base image that is required for us can me pulled
+b) ENV = environment variables we can set id and password to make changes whenever we needed.
+c) Run = can make linux commands run using this command
+d) copy = excutes on the host 
+e) CMD = excutes an entry point to the linux command.
+
+Steps: 
+step 1: create a file named Dockerfile = FROM <base image/name/os/image/data>
+step 2: add instructions to docker file - Maintainer <any Name> <any Email>
+step 3: build dockerfile to create image - Run apt-get update
+step 4: Run image to create Container
+references: 1 - https://github.com/wsargent/docker-cheat-sheet#dockerfile
+	    2 - https://docs.docker.com/engine/reference/builder/#environment-replacement
+{
+
+> touch <file name> = file for docker file should be 'Dockerfile' no extensions is needed
+> vm <file name> = goes that place and try to edit 'Dockerfile'
+> FROM < any os palce/image or data >= it extracts from that os/image or data
+> MAINTAINER <name> <email> = maintains by that person details 
+> Run apt-get update = runs with update (it gets excuted during the building of the image) 
+> CMD ["echo", "hello world..!"] (it gets only when you create the container out of the image)
+> :wq! = to switch or exit the terminal
+> cat Dockerfile = we get all what we have created.
+> docker build . = build the image of Dockerfile
+> docker build -t <image_name:image_tag> = build the image of Dockerfile with name and tag of it 
+> docker run -p <local-port>:<container-port> -d --rm --name <container-name> <image-name>:<image-tag>
+> docker images = see all the images
+    
+}
+
+Environment variables are supported by the following list of instructions in the Dockerfile:
+
+ADD
+COPY
+ENV
+EXPOSE
+FROM
+LABEL
+STOPSIGNAL
+USER
+VOLUME
+WORKDIR
+ONBUILD (when combined with one of the supported instructions above)
+
+==> Environment variable substitution will use the same value for each variable throughout the entire instruction.
+
+FROM - Specifies the base image that the Dockerfile will use to build a new image.
+
+MAINTAINER - Specifies the Dockerfile Author Name and his/her email.
+
+RUN - Runs any UNIX command to build the image.
+
+ENV - Sets the environment variables. For this post, JAVA_HOME is the variable that is set.
+
+CMD - Provides the facility to run commands at the start of container. This can be overridden upon executing the docker run command.
+
+ADD - This instruction copies the new files, directories into the Docker container file system at specified destination.
+
+EXPOSE - This instruction exposes specified port to the host machine.
+
+==> $ docker build -f Dockerfile -t demo/oracle-java:8 .
+
+-f specifies the Dockerfile. This can be skipped if the filename used at the beginning of this process is Dockerfile.
+
+-t specifies the name of the image. The name demo/oracle-java, and the 8 after the colon, specify the image tag.
+   - The tag 8 is used because we are using Java 8.
+   - This can be changed to any tag name that makes sense.
+
+-p 80:80 - map port 80 of the host to port 80 in the container
+
+ports: -> running on http://0.0.0.0:5000/ this application listens on port 5000.
+       -> wht IP do you need to use to access it from a web browser. there are two options avilable
+       -> 1-use IP of the docker container by default every docker container has a IP address, it is an internal IP only accessinle within the host. example:17217.0.2/5000.
+       -> docker run -p 80:5000, here 80 is the external port and 5000 is the internal port of the application.
+
+-d is used to deattach or use in normal condition
+=============================================================================================================================================================================
+6 - Docker Compose  
+// image f
+==> tool for defining & running multi-container docker applications
+==> we use yaml files to configure and create application services (docker-compose.yml)
+==> can start all services with a single command : docker compose up
+==> can stop all services with a single command : docker compose down
+==> can scale up selected services when required
+
+Step 1: install docker compose
+    	(already installed on windows and mac with docker)
+    	   docker-compose -v
+   
+    2 Ways: using PIP (python)
+
+    1.  https://github.com/docker/compose/releases
+
+    2. Using PIP
+        pip install -U docker-compose
+
+Step 2 : Create docker compose file at any location on your system
+   	 docker-compose.yml inside the Dockerfile.
+
+Step 3 : Check the validity of file by command
+         docker-compose config ( check the compose version in order to avoid errors )
+
+Step 4 : Run docker-compose.yml file by command
+         docker-compose up -d
+
+Steps 5 : Bring down application by command
+   docker-compose down
+
+TIPS
+How to scale services
+
+—scale = scale numb of database services
+docker-compose up -d --scale database=4 = starts normally with 4 databases
+
+Resources: 1 - https://docs.docker.com/compose/compose-file/
+	   2 - https://www.google.co.in/search?q=microservices+example&rlz=1C5CHFA_enIN734IN734&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjE3LPQqYfcAhXGpY8KHQHmB4gQ_AUICigB
+{
+
+>docker-compose -v = shows the version
+>docker-compose version or --version = shows the complete info version of it.
+>docker-compose up -d = starts the server and -d for normal starts (dettached mode)
+>docker-compose ps = shows the running one
+>docker-compose down = stops the app 
+>docker-compose up -d --scale database==4 = we can increase the nginx with 4 database
+>dockert expose = ***
+
+}
+=============================================================================================================================================================================
+7 - Docker volume:
+==>Today we will learn:
+1. What are Volumes
+2. How to create / list / delete volumes
+3. How to attach volume to a container
+4. How to share volume among containers
+5. What are bind mounts
+
+Volumes are the preferred mechanism for persisting data generated by and used by Docker containers
+
+-Instead of deleting containers one by one of docker ps -a ,
+-we can use docker container prune.
+-and for docker ps (running containers) we can use  docker rm $(ps -aq)
+
+Use of Volumes:
+1 - Decoupling container from storage
+2 - Share volume (storage/data) among different containers
+3 - Attach volume to container
+4 - On deleting container volume does not delete
+
+Commands:
+{
+> docker volume  =  //get information
+> docker volume create
+> docker volume ls
+> docker volume inspect < volume name >
+> docker volume rm
+> docker volume prune
+> docker run --name MyJenkins1 -v myvol1:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins
+> docker run --name MyJenkins2 -v myvol1:/var/jenkins_home -p 9090:8080 -p 60000:50000 jenkins
+> docker run --name MyJenkins3 -v /Users/raghav/Desktop/Jenkins_Home:/var/jenkins_home -p 9191:8080 -p 40000:50000 jenkins
+
+}
+
+References: 1 - https://docs.docker.com/storage/volumes/
+	    2 - https://docs.docker.com/get-started/
+
+NOTES:
+
+    By default all files created inside a container are stored on a writable container layer	
+
+    The data doesn’t persist when that container is no longer running
+
+    A container’s writable layer is tightly coupled to the host machine where the container is running. You can’t easily move the data somewhere else.
+
+    Docker has two options for containers to store files in the host machine so that the files are persisted even after the container stops
+
+VOLUMES  and  BIND MOUNTS:
+
+    Volumes are stored in a part of the host filesystem which is managed by Docker
+
+    Non-Docker processes should not modify this part of the filesystem
+
+    Bind mounts may be stored anywhere on the host system
+
+    Non-Docker processes on the Docker host or a Docker container can modify them at any time
+
+    In Bind Mounts, the file or directory is referenced by its full path on the host machine. 
+
+
+    Volumes are the best way to persist data in Docker
+
+    volumes are managed by Docker and are isolated from the core functionality of the host machine
+
+    A given volume can be mounted into multiple containers simultaneously.
+
+    When no running container is using a volume, the volume is still available to Docker and is not removed automatically.
+    You can remove unused volumes using docker volume prune.
+
+    When you mount a volume, it may be named or anonymous. 
+
+    Anonymous volumes are not given an explicit name when they are first mounted into a container
+
+    Volumes also support the use of volume drivers, which allow you to store your data on remote hosts or cloud providers, among other possibilities.
+
+
+
+============================================================================================================================================================
+Difference:
+
+1 - CMD vs ENTRYPOINT (both are excuted at runtime)    Reference = https://www.youtube.com/watch?v=6lcYyo9e7-0
+{
+CMD  - excute when your creating container out of the image. to provide defaults for an exisiting container.
+     - compile time instruction.
+     - we can edit and add new command(i.e = override is possible) the data in the terminal through (echo or with) 'edit anything here' and,
+     - if we add multiple command instructions it will only consider only the latest(i.e, last written) command.
+     - Note: cmd should give the more priority
+     - (syntax) = CMD ["executable","param1","param2"] = This is exec form
+
+ENTRYPOINT - The best use for ENTRYPOINT is to set the image’s main command instruction.
+	   - allows you to configure a container that will run as an executable.(override is not possible)
+	   - we can't edit and add new command the data in the terminal through (echo or with) 'edit anything here'. 
+	   - Note: instead it will get append to the already present command.(i.e = append is possible).
+           - if we add multiple command instructions it will only consider only the latest command.
+
+Run - it excutes at the time of the building the image 
+    - compile time instruction. 
+    - can make linux commands run using this command
+    - used to install packages and trees.
+    - (syntax) = RUN ["executable","param1","param2"] = This is exec form
+    
+}
+
+2 - exec and attach and dettach
+{
+exec - enter in the container,(info and core inspects)& lets you run more than more process in docker container
+     - basically runs or executes a command on a running container.
+
+attach - lets you attach with your host system process to that of the container
+	 - can go inside the container only of = bash/bin/sh
+
+dettach - without killing to get out of the container we use dettach i.e, ctrl+P+Q
+}
+
+3- expose and publish 
+{
+expose - is a way of documenting 
+
+--publish or -p is a way of mapping a host to a running container port 
+}
+
+
+=============================================================================================================================================================
+commands: Resource - from youtube (telusko) - https://www.youtube.com/watch?v=GGaDSAMeopo&t=3641s 
+
+1 - docker run hello-world
+2 - docker ps = shows running docker 
+3 - docker ps -a = shows the created docker details
+4 - docker image ls = shows the images details in the local
+5 - docker rmi <image id> = delete the image which is present through image ID
+6 - docker rm <container id> = delete the container which is present through container ID
+7 - docker image pull ubuntu:latest = pulling the image from ubuntu of latest one.
+8 - docker run -it <ubuntu image id = ba6acccedd29> /bin/bash = it runs in the ubuntu root server we are processing ubuntu in the docker container app.
+9 - root@ca60432b278d:/# = ubuntu root 
+10 - root@ca60432b278d:/# ps = check what all are the processes running
+11 - root@ca60432b278d:/# ls = list directires in ubuntu 
+12 - root@ca60432b278d:/# uname -a = checks the system information and displays us
+13 - root@ca60432b278d:/# apt-get update = allows to update the ubuntu to provied us more featurs in it.
+14 - root@ca60432b278d:/# apt-get install iputils-ping = installs the option to use the ping command in order to connect the liks or url's.
+15 - root@ca60432b278d:/# ping google.com = example to connect the google.com link.
+16 - 
+
+============================================================================================================================================================
+Top 15 commands: 
+-{
+ 
+docker –version
+docker pull
+docker run
+docker ps
+docker ps -a
+docker exec
+docker stop
+docker kill
+docker commit
+docker login
+docker push
+docker images
+docker rm
+docker rmi
+docker build
+
+}
+==============================================================================================================================================================
+basics: 
+
+docker  attach      Attach local standard input, output, and error streams to a running container
+docker  build       Build an image from a Dockerfile
+docker  commit      Create a new image from a container's changes
+docker  cp          Copy files/folders between a container and the local filesystem
+docker  create      Create a new container
+docker  diff        Inspect changes to files or directories on a container's filesystem
+docker  events      Get real time events from the server
+docker  exec        Run a command in a running container
+docker  export      Export a container's filesystem as a tar archive
+docker  history     Show the history of an image
+docker  images      List images
+docker  import      Import the contents from a tarball to create a filesystem image
+docker  info        Display system-wide information
+docker  inspect     Return low-level information on Docker objects
+docker  kill        Kill one or more running containers
+docker  load        Load an image from a tar archive or STDIN
+docker  login       Log in to a Docker registry
+docker  logout      Log out from a Docker registry
+docker  logs        Fetch the logs of a container
+docker  pause       Pause all processes within one or more containers
+docker  port        List port mappings or a specific mapping for the container
+docker  ps          List containers
+docker  pull        Pull an image or a repository from a registry
+docker  push        Push an image or a repository to a registry
+docker  rename      Rename a container
+docker  restart     Restart one or more containers
+docker  rm          Remove one or more containers
+docker  rmi         Remove one or more images
+docker  run         Run a command in a new container
+docker  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+docker  search      Search the Docker Hub for images
+docker  start       Start one or more stopped containers
+docker  stats       Display a live stream of container(s) resource usage statistics
+docker  stop        Stop one or more running containers
+docker  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+docker  top         Display the running processes of a container
+docker  unpause     Unpause all processes within one or more containers
+docker  update      Update configuration of one or more containers
+docker  version     Show the Docker version information
+docker  wait        Block until one or more containers stop, then print their exit codes
+=============================================================================================================================================================
+# Docker Template:
+
+1 - FROM = The Base Image name.example: FROM node
+2 - WORKDIR = Is the place of the working directory example: WORKDIR /app = which run the cmnds in this directory. 
+3 - COPY .. = Both Dots which represents the Path , 
+            - First Dot: Represents the path outside of the container and image where it copies all the files into the image.
+              and which says to copy all files in the current folder to that image.
+            - Second Dot: Path inside of the image where those files should be stored. 
+            - Example: "COPY . /app"  = This says to copy all files from current path to the app folder in the image file system. 
+            - Note: Every Image created in the container has its own built in file system.
+4 - RUN npm install = Is the command to Run the project. write our command accordingly.
+5 - EXPOSE  80 = It is the port that we give for the access. 
+6 - CMD ["node","server.js"] = This wil run only when the container is created not when the image is created.
+                             - node is the base image without base image we get error and server.js is the file to run. 
+
+
+# Commands for template:
+-> first build the image. = " docker build . " Note: To give name for the image use tag in cmd " docker build -t Name:tag . " =>s example(goals:v1) "
+-> check wheather it is created or not = " docker ps " for images and " docker ps -a " for containers
+-> then publish the ports of docker image = " docker run -p 3000:80 <image_ID> " Note: "docker run -p 2000:80 -d --rm --name goals:v1"
+                                          - here -d is the detach mood to run the container in the backgrouund and take the inputs.
+                                          - Here the -p is the publish for port and 3000 is the local port where we want to give.
+                                          - 80 is the connecting port of the docker file which listens and connects internally. 
+
+# Note:
+- Images are read-only so everytime you change the code you have to rebuild the docker file to see the changes.
+- Everyone who has an image, can create containers based on the images.  
+- share a docker file: a) simply run docker build . b) The dockerfile instructions Might need surrounding files / folders (e.g. source code)
+- share a built image: a) download an image,run container based on it. b) no build step requierd, everything is included in the image only.
+
+# Push/Pull to docker image:
+a) push image:
+- sign in to the docker hub and create a repo in docker hub  
+- let's say your existing project name is nodejs-app clone the with diffrent name by below cmd
+- docker tag nodejs-app:latest vikas9821/<repo-name>:latest = Here the "vikas9821" is docker accunt id. 
+- docker push vikas9821/<repo-name>. = this cmd will push to the docker hub repo.
+b) pull image:
+- docker pull vikas9821/<repo-name> = pulls the image in u r local
+
+# Managing data & working with volumes:
+=> Data:
+- it has a application data(code+Environment), IMAGES are read-only.
+- it has a temporary data (Read + Write) stored in temporary files, hence stored in containers.
+- it has a permanent app data (user acc) stored in files or database, Read + write permanent stored with containers & volumes.
+
+=> Volumes:(managed by docker internal storage)
+- Are only managed by docker and we dont know where the exact storage path is present.
+- folders on your host machine on u r computer mapped into containers
+- volumes persist if a container shuts down. if a container re-starts and mounts a volume, any data inside of that volume is available in the conatiner.
+- container can write data into a volume and read data from it.
+- 2 types of volumes = a) Anonymous volumes b) named volumes.
+- Named volumes: are Great for data which should be persistent but which you dont need to edit directly.
+- docker run -d -p 2000:80 --rm --name feedback-app -v feeback:/app/feedback feedback-node:volumes
+- -v = volumes, "feedback" is the volume name, /app/feedback is the path of local storage managed by docker only.
+- Example: docker run -v/app.data.. = Anonymous volumes
+- Example: docker run -v data:/app/data.. = Named volumes
+
+=> Bind Mounts:(Bind mounts is the external storage)
+- Here we can see our path and set the local storage on u r local host machine for the data.
+- Great for persistent, editable(by you) data (e.g. source code)
+- Example: docker run -v /path/to/code:/app/code.. = Bind Mount
+
+=> ARGS & ENV:
+- docker supports build-time ARGuments and runtime ENVironment variables.
+- ARG: Avaialble inside of dockerfile, NOT accessible in CMD or any Application code.
+- ARG Example: Set on image build (docker build) via --bild-arg
+- ENV: Available inside of dockerfile & in application code
+- ENV Example: set via ENV in Dockerfile or via --ENV on docker run
+- ENV Example: In Docker File = ENV PORT 80
+                                EXPOSE $PORT
+- 
+
+# Networks and containers:
+- Containers & External Networks 
+- Connecting Containers with networks.
+
+=>3 cases  
+- case 1: req from containers to " WWW "
+- case 2: req from containers to host machine. (use " host.docker.internal " as address) Example: docker run -d --name mangodb mongo
+- case 3: req from containers to other conatiners. (it requires a conatiner network which needs to be created)
+
+=>container networks 
+- docker network create <network_name> = where we create a container network and drop all together at one place.
+
+=>container networks 
+- docker network create <network_name> = where we create a container network and drop all together at one place.
+
+Note:
+- Docker will not replace your source code. 
+- It simply detects outgoing requests and resolves the IP for such requests.
+
+# Multi Containers:
+- Combining multiple services to one app
+- working with multiple containers
+
+# Docker Compose:
+- to run multiple containers at once up and down
+Note: 
+- Docker compose Does not replace Dockerfile,images,containers.
+- Docker compose is not suited for managing multiple conatiners on different hosts (machine)
+
+#Docker Service:
+- Docker service create --replicas=3 my-web-serve
+- Note: Docker services must be run on the manager node and not on the worker node. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               
+ 
